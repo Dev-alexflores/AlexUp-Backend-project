@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+	<CodeAnalysisRuleSet>../../../stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+    <ProjectReference Include="..\..\dal\AlexSoft.AlexUp.DALInterfaces\AlexSoft.AlexUp.DALInterfaces.csproj" />
+    <ProjectReference Include="..\..\dal\AlexSoft.AlexUp.DAL\AlexSoft.AlexUp.DAL.csproj" />
+    <ProjectReference Include="..\..\models\AlexSoft.AlexUp.Models\AlexSoft.AlexUp.Models.csproj" />
+    <ProjectReference Include="..\AlexSoft.AlexUp.CoreInterfaces\AlexSoft.AlexUp.CoreInterfaces.csproj" />
+  </ItemGroup>
+
+</Project>
