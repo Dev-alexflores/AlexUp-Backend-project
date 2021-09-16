@@ -39,7 +39,11 @@ jobs:
       command: 'build'
       projects: ${{ parameters.projectsPath }}
       arguments: '--configuration ${{ parameters.buildConfiguration }} --output $(Build.ArtifactStagingDirectory) /p:TreatWarningsAsErrors=${{ parameters.styleCopEnabled }}'
-
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet Test'
+    inputs:
+      command: 'test'
+      projects: ${{ parameters.testProjectsPath }}
   - task: DotNetCoreCLI@2
     displayName: 'Dotnet Publish'
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
