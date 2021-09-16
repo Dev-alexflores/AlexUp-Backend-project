@@ -15,7 +15,7 @@
 
         public string GetHealth()
         {
-            return "The CoteApp is alive  and running";
+            return "The CoteApp is Alive  and running";
         }
     }
 }
