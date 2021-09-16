@@ -1,4 +1,4 @@
-﻿namespace Jalasoft.TeamUp.Projects.API.Tests.Utils
+﻿namespace AlexSoft.AlexUp.ApiUnitTests
 {
     using System;
     using System.Collections.Generic;

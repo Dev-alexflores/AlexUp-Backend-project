@@ -4,12 +4,9 @@ namespace AlexSoft.AlexUp.ApiUnitTests
     using AlexSoft.AlexUp.Models;
     using AlexSoft.AlexUp.Projects;
     using AlexSoft.AlexUp.Projects.Controllers;
-    using Jalasoft.TeamUp.Projects.API.Tests.Utils;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
-    using System;
-    using System.Collections.Generic;
     using Xunit;
 
     public class GetProjectsTests
@@ -33,13 +30,13 @@ namespace AlexSoft.AlexUp.ApiUnitTests
             projects[0] = StubProject.GetStubProject();
             var request = this.mockHttpContext.Request;
             this.mockService.Setup(service => service.GetHealth()).Returns("string");
+
             // Act
             var result = this.getHealth.Health(request);
+
             // Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result);
             Assert.IsType<string>(okObjectResult.Value);
-
         }
-
     }
 }
