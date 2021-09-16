@@ -9,7 +9,8 @@ pool:
 
 variables:
   projects: '**/**/*.sln'
-
+  styleCopEnabled: 'true'
+  testsProjects: '**/*Tests/*.csproj'
 stages:
 - stage: Build
   displayName: Build & Test
