@@ -21,6 +21,12 @@ parameters:
   - name: 'styleCopEnabled'
     default: 'true'
     type: string
+  - name: 'azureSubscription'
+    default: 'rg-dev-cote-bra'
+    type: string
+  - name: 'appName'
+    default: 'fa-cdapi-projects-dev-bra'
+    type: string
 
 jobs:
 - job: Build
@@ -70,3 +76,18 @@ jobs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       ArtifactName: 'drop'
       publishLocation: 'Container'
+
+- deployment: Deploy
+  displayName: 'Deploy to dev'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: AzureFunctionApp@1
+          displayName: 'Deploy API'
+          inputs:
+            azureSubscription: ${{ parameters.azureSubscription }}
+            appType: 'functionAppLinux'
+            appName: ${{ parameters.appName }}
+            package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+            runtimeStack: 'DOTNET|3.1'
