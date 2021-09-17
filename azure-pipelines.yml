@@ -81,6 +81,7 @@ jobs:
 - job: Deploy
 - deployment: Deploy
   displayName: 'Deploy to dev'
+  environment: 'Dev'
   strategy:
     runOnce:
       deploy:
