@@ -76,12 +76,11 @@ jobs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       ArtifactName: 'drop'
       publishLocation: 'Container'
-
-
-- job: Deploy
-- deployment: deploy
+      
+- job: Deploy 
+- deployment: Deploy
   displayName: 'Deploy to dev'
-  environment: 'Dev'
+  environment: 'dev'
   strategy:
     runOnce:
       deploy:
