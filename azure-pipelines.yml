@@ -22,7 +22,7 @@ parameters:
     default: 'true'
     type: string
   - name: 'azureSubscription'
-    default: 'rg-dev-cote-bra (68417a70-80ac-4db7-b7a2-46959c7bdf82)'
+    default: 'rg-dev-cote-bra'
     type: string
   - name: 'appName'
     default: 'fa-cdapi-projects-dev-bra'
