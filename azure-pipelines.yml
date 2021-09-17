@@ -79,7 +79,7 @@ jobs:
 
 
 - job: Deploy
-- deployment: Deploy
+- deployment: deploy
   displayName: 'Deploy to dev'
   environment: 'Dev'
   strategy:
