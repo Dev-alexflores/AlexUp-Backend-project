@@ -77,18 +77,23 @@ jobs:
       ArtifactName: 'drop'
       publishLocation: 'Container'
 
-- deployment: Deploy
-  displayName: 'Deploy to dev'
-  environment: 'dev'
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - task: AzureFunctionApp@1
-          displayName: 'Deploy API'
-          inputs:
-            azureSubscription: ${{ parameters.azureSubscription }}
-            appType: 'functionAppLinux'
-            appName: ${{ parameters.appName }}
-            package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-            runtimeStack: 'DOTNET|3.1'
+- job: Deploy
+  displayName: Deploy
+
+  steps:
+  - task: DownloadBuildArtifacts@1
+    displayName: 'Download Artifact'
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      itemPattern: 'drop/$(Build.BuildId).zip'
+      downloadPath: '$(System.ArtifactsDirectory)'
+
+  - task: AzureFunctionApp@1
+    displayName: 'Azure functions app deploy'
+    inputs:
+      azureSubscription: ${{ parameters.azureSubscription }}
+      appType: 'functionAppLinux'
+      appName: ${{ parameters.appName }}
+      package: '$(System.ArtifactsDirectory)/drop/$(Build.BuildId).zip'
+      runtimeStack: 'DOTNET|3.1'
