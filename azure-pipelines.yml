@@ -77,7 +77,6 @@ jobs:
       ArtifactName: 'drop'
       publishLocation: 'Container'
       
-- job: Deployment 
 - deployment: Deploy
   displayName: 'Deploy to dev'
   environment: 'dev'
