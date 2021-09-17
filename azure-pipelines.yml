@@ -77,6 +77,8 @@ jobs:
       ArtifactName: 'drop'
       publishLocation: 'Container'
 
+
+- job: Deploy
 - deployment: Deploy
   displayName: 'Deploy to dev'
   strategy:
