@@ -1,0 +1,78 @@
+pr:
+  branches:
+    include:
+      - develop
+parameters:
+  - name: 'vmImage'
+    default: 'ubuntu-latest'
+    type: string
+  - name: 'sdkVersion'
+    default: '3.x'
+    type: string
+  - name: 'projectsPath'
+    default: '**/**/*.sln'
+    type: string
+  - name: 'testProjectsPath'
+    default: '**/*Tests/*.csproj'
+    type: string
+  - name: 'buildConfiguration'
+    default: 'Release'
+    type: string
+  - name: 'styleCopEnabled'
+    default: 'true'
+    type: string
+  - name: 'azureSubscription'
+    default: 'rg-dev-cote-bra (68417a70-80ac-4db7-b7a2-46959c7bdf82)'
+    type: string
+  - name: 'appName'
+    default: 'fa-cdapi-projects-dev-bra'
+    type: string
+
+jobs:
+- job: Build
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Dotnet Install'
+    inputs:
+      packageType: 'sdk'
+      version: ${{ parameters.sdkVersion }}
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet Build'
+    inputs:
+      command: 'build'
+      projects: ${{ parameters.projectsPath }}
+      arguments: '--configuration ${{ parameters.buildConfiguration }} --output $(Build.ArtifactStagingDirectory) /p:TreatWarningsAsErrors=${{ parameters.styleCopEnabled }}'
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet Test'
+    inputs:
+      command: 'test'
+      projects: ${{ parameters.testProjectsPath }}
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet Publish'
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      arguments: '--configuration ${{ parameters.buildConfiguration }}'
+      zipAfterPublish: false
+
+  - task: ArchiveFiles@2
+    displayName: 'Archive Files'
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    inputs:
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      replaceExistingArchive: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Drop Artifact'
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
